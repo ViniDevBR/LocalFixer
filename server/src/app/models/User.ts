@@ -5,33 +5,44 @@ export const User = model('User', new Schema({
     type: String,
     required: true
   },
+  position: {
+    type: String,
+    enum: ['Tecnico', 'Analista'],
+    default: 'Tecnico',
+    required: true
+  },
   password: {
     type: String,
-    required: true
+    required: true,
+    select: false
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true,
   },
   pushToken: {
     type: String,
-    required: true
+    required: true,
+    unique: true,
   },
   localization: {
     type: [{
-      coords: {
-        altitude: {
-          type: Number,
-          required: true
-        },
-        latitude: {
-          type: Number,
-          required: true
-        },
-        longitude: {
-          type: Number,
-          required: true
-        },
-        timestamp: {
-          type: String,
-          required: true
-        },
+      altitude: {
+        type: Number,
+        required: true
+      },
+      latitude: {
+        type: Number,
+        required: true
+      },
+      longitude: {
+        type: Number,
+        required: true
+      },
+      timestamp: {
+        type: String,
         required: true
       }
     }],

@@ -1,14 +1,18 @@
 import express from 'express'
 import mongoose from 'mongoose'
-import { router } from './router'
+//ROUTERS
+import { userRouter } from './controllers/auth'
+import { ordersRouter } from './controllers/orders'
 
-const app = express()
+
+export const app = express()
 
 mongoose.set('strictQuery', true)
 mongoose.connect('mongodb://localhost:27017')
   .then(() => {
     const port = 5555
 
+    app.use(express.json())
     app.use((req, res, next) => {
       res.setHeader('Access-Control-Allow-Origin', '*')
       res.setHeader('Access-Control-Allow-Methods', '*')
@@ -17,8 +21,8 @@ mongoose.connect('mongodb://localhost:27017')
       next()
     })
 
-    app.use(express.json())
-    app.use(router)
+    app.use('/auth', userRouter)
+    app.use('/orders', ordersRouter)
 
     app.listen(port, () => {
       console.log('SERVER ONLINE 🚀🔥')
