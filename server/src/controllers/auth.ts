@@ -15,7 +15,12 @@ userRouter.delete('/delete/:id', deleteUser)
 userRouter.post('/login', loginAuth)
 
 userRouter.get('/users', async (req, res) => {
-  const allUsers = await User.find()
+  try {
+    const allUsers = await User.find()
 
-  res.send(allUsers)
+    return res.send(allUsers)
+  } catch (error) {
+    console.log(error)
+    return res.status(404).send({ message: 'ERRO' })
+  }
 })

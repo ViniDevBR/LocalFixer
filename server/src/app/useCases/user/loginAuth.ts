@@ -16,7 +16,7 @@ export async function loginAuth(req: Request, res: Response) {
     const userEmail = await User.findOne({ email })
 
     if (!userEmail) {
-      res.status(404).send({
+      return res.status(404).send({
         message: 'USUARIO NÃO EXISTE'
       })
     }
@@ -24,7 +24,7 @@ export async function loginAuth(req: Request, res: Response) {
     const userPassword = await User.findOne({ password })
 
     if (!userPassword) {
-      res.status(404).send({
+      return res.status(404).send({
         message: 'SENHA INCORRETA'
       })
     }
@@ -38,10 +38,10 @@ export async function loginAuth(req: Request, res: Response) {
       expiresIn: 2592000000 // 1 MES
     })
 
-    res.status(200).send({ name: userEmail?.name, token, position: userEmail?.position })
+    return res.status(200).send({ name: userEmail?.name, token, position: userEmail?.position })
 
   } catch (error) {
-    res.status(400).send({ message: 'ERRO AO LOGAR' })
     console.log(error)
+    return res.status(400).send({ message: 'ERRO AO LOGAR' })
   }
 }

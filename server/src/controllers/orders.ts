@@ -8,5 +8,5 @@ export const ordersRouter = Router()
 ordersRouter.use(authMiddleware)
 
 ordersRouter.get('/main', async (req, res) => {
-  res.send({ message: 'TOKEN JA RODANDO' })
+  return res.send({ message: 'TOKEN JA RODANDO' })
 })

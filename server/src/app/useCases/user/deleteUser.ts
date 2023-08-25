@@ -10,9 +10,9 @@ export async function deleteUser(req: Request, res: Response) {
 
     const response = await User.findByIdAndDelete(id)
 
-    res.send(response)
+    return res.send(response)
   } catch (error) {
     console.log(error)
-    res.status(400).send({ message: 'ERRO AO DELETAR USUARIO' })
+    return res.status(400).send({ message: 'ERRO AO DELETAR USUARIO' })
   }
 }

@@ -22,10 +22,10 @@ export async function registerUser(req: Request, res: Response) {
       position
     })
 
-    res.status(201).json(create)
+    return res.status(201).json(create)
 
   } catch (error) {
     console.log(error)
-    res.status(400).send({ message: 'ERRO AO CRIAR USUARIO' })
+    return res.status(400).send({ message: 'ERRO AO CRIAR USUARIO' })
   }
 }
