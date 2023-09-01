@@ -5,6 +5,8 @@ export default {
     PRIMARY: '#0077FF',
     SECONDARY: '#00A86B',
     TERCIARY: '#FD3C4A',
+
+    PRIMARY_DISABLED: '#BDDCFF',
     
     GRAY_100: '#D9D9D9',
     GRAY_500: '#6F6F6F',

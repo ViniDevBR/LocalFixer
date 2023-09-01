@@ -1,26 +1,36 @@
 import { createContext, ReactNode, useEffect, useState } from 'react'
 import * as SecureStore from 'expo-secure-store'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
 interface IContext {
   token: string
+  position: Position
+  updatePosition: (position: Position) => void
+  deletePosition: (position: null) => void
   updateToken: (token: string) => void
   deleteToken: () => void
 }
 interface IProvider {
   children: ReactNode
 }
+type Position = 'Analista' | 'Tecnico' | 'NULL'
+
 
 const defaultValuesContext = {
   token: '',
+  position: 'NULL',
   updateToken: () => {},
   deleteToken: () => {},
+  deletePosition: () => {},
+  updatePosition: () => {},
 } satisfies IContext
 
 export const TokenContext = createContext<IContext>(defaultValuesContext)
 
 export function TokenProvider({ children }: IProvider) {
   const [token, setToken] = useState<string>('')
+  const [position, setPosition] = useState<Position>('NULL')
 
   async function updateToken(token: string) {
     setToken(token)
@@ -31,21 +41,39 @@ export function TokenProvider({ children }: IProvider) {
     updateToken('')
   }
 
-  async function verifyToken() {
-    const data = await SecureStore.getItemAsync('localFixerToken')
-    const dataResponse = data ? JSON.parse(data) : ''
+  async function verifyInfos() {
+    const [tokenAsync, positionAsync] = await Promise.all([
+      SecureStore.getItemAsync('localFixerToken'),
+      AsyncStorage.getItem('localFixerPosition')
+    ])
+   
+    const tokenResponse = tokenAsync ? JSON.parse(tokenAsync) : ''
+    const positionResponse = positionAsync ? JSON.parse(positionAsync) : 'NULL'
 
-    setToken(dataResponse)
+    setToken(tokenResponse)
+    setPosition(positionResponse)
+  }
+
+  async function updatePosition(position: Position) {
+    setPosition(position)
+    await AsyncStorage.setItem('localFixerPosition', position)
+  }
+
+  async function deletePosition() {
+    updatePosition('NULL')
   }
 
   useEffect(() => {
-    verifyToken()
+    verifyInfos()
   },[])
 
   const values = {
     token,
+    position,
     updateToken,
-    deleteToken
+    deleteToken,
+    deletePosition,
+    updatePosition
   }
   
   return (

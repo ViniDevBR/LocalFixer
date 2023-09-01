@@ -1,14 +1,28 @@
+//REACT
+import { useCallback } from 'react'
+//EXPO
 import { StatusBar } from 'expo-status-bar'
-import { Routes } from './src/routes'
 import { useFonts } from 'expo-font'
 import * as SplashScreen from 'expo-splash-screen'
-import { useCallback } from 'react'
-import { Loading } from './src/components/Loading'
+import * as Notifications from 'expo-notifications'
+//PROVIDERS
 import { ThemeProvider } from 'styled-components'
-import light from './src/theme/light'
+import { TokenProvider } from '@/context/tokenContext'
+//USE APP
+import light from '@/theme/light'
+import { Routes } from '@/routes'
+import { Loading } from '@/components/Loading'
 
 
 SplashScreen.preventAutoHideAsync()
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+})
 
 export default function App() {
   const [fontsLoaded, fontError] = useFonts({
@@ -29,11 +43,13 @@ export default function App() {
     }
   }, [fontsLoaded, fontError])
   
-  console.log(fontsLoaded, fontError)
+  //console.log(fontsLoaded, fontError)
   return (
-    <ThemeProvider theme={light}>
-      <StatusBar style="auto" />
-      {fontsLoaded ? <Routes onLayout={onLayoutRootView}/> : <Loading />}
-    </ThemeProvider>
+    <TokenProvider>
+      <ThemeProvider theme={light}>
+        <StatusBar style="auto" />
+        {fontsLoaded ? <Routes onLayout={onLayoutRootView}/> : <Loading />}
+      </ThemeProvider>
+    </TokenProvider>
   )
 }
