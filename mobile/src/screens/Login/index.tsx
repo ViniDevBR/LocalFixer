@@ -8,7 +8,7 @@ import {
 //COMPONENTS
 import { Text } from '@/components/Text'
 import { Ionicons } from '@expo/vector-icons'
-import { Input } from '@/components/Inputs'
+import { ControlledInput } from '@/components/Inputs'
 import { Button } from '@/components/Button'
 //STYLED COMPONENTS
 import * as S from './styles'
@@ -20,10 +20,10 @@ import { useLogin } from './useScreen'
 export function Login() {
   const {
     COLORS,
-    control,
     errors,
-    passwordVisible,
+    control,
     isSubmitting,
+    passwordVisible,
     handlePasswordVisible,
     handleSubmit,
     onSubmit,
@@ -56,9 +56,8 @@ export function Login() {
             <Text>
               E-mail
             </Text>
-            <Input 
+            <ControlledInput 
               control={control}
-              type='control' 
               keyboardType='email-address'
               name='email' 
               placeholder='user@email.com' 
@@ -69,9 +68,8 @@ export function Login() {
             <Text style={{ marginTop: 20 }}>
               Senha
             </Text>
-            <Input 
+            <ControlledInput 
               control={control}
-              type='control'
               secureTextEntry={passwordVisible}
               onPress={handlePasswordVisible}
               name='password' 
